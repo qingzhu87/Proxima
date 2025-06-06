@@ -6,11 +6,54 @@ let activeProfileId = null;
 // Using an async IIFE for top-level await
 (async () => {
     console.log('SwitchyOmega background script starting...');
-    await loadInitialData();
-    await applyActiveProfile();
-    addEventListeners();
-    console.log('SwitchyOmega initialization complete. Active profile:', activeProfileId);
+    try {
+        await loadInitialData();
+        await applyActiveProfile();
+        addEventListeners();
+        console.log('SwitchyOmega initialization complete. Active profile:', activeProfileId);
+        
+        // 保持 service worker 活跃
+        keepAlive();
+    } catch (error) {
+        console.error('Error during initialization:', error);
+    }
 })();
+
+// 通过定期执行任务来保持 service worker 活跃
+function keepAlive() {
+    const keepAliveInterval = 20 * 1000; // 20 秒，低于 Chrome 的 30 秒超时
+    
+    // 设置定时器以保持 service worker 活跃
+    const intervalId = setInterval(() => {
+        console.log('保持 service worker 活跃中...');
+        // 执行一些轻量级操作以保持活跃
+        chrome.storage.local.get('activeProfileId', (data) => {
+            if (data && data.activeProfileId !== activeProfileId) {
+                console.log('检测到活跃配置文件变化，更新中...');
+                activeProfileId = data.activeProfileId;
+                applyActiveProfile();
+            }
+        });
+    }, keepAliveInterval);
+    
+    // 注册一个空的 fetch 处理程序以保持 service worker 活跃
+    self.addEventListener('fetch', (event) => {
+        // 不做任何事情，只是保持 service worker 活跃
+    });
+    
+    // 确保 service worker 在关闭前清理资源
+    self.addEventListener('beforeunload', () => {
+        clearInterval(intervalId);
+    });
+    
+    // 监听来自 popup 的连接请求
+    chrome.runtime.onConnect.addListener((port) => {
+        console.log('收到来自 popup 的连接');
+        port.onDisconnect.addListener(() => {
+            console.log('popup 已断开连接');
+        });
+    });
+}
 
 
 // --- DATA & STATE MANAGEMENT ---
@@ -183,18 +226,38 @@ function addEventListeners() {
     // Listen for messages from popup or options page
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log('Received message:', message);
-        if (message.type === 'PROFILES_CHANGED') {
-            console.log('Profiles changed, reloading...');
-            reloadProfiles().then(() => applyActiveProfile());
-        } else if (message.type === 'SET_ACTIVE_PROFILE') {
-            console.log(`Setting active profile to: ${message.profileId}`);
-            setActiveProfile(message.profileId);
-        } else if (message.type === 'GET_APP_STATE') {
-            // Return both user-defined and built-in profiles for the popup
-            const allProfiles = [...getBuiltInProfiles(), ...profiles];
-            console.log('Sending app state to popup:', { profiles: allProfiles, activeProfileId });
-            sendResponse({ profiles: allProfiles, activeProfileId });
-        }
+        
+        // 确保在处理消息之前状态已加载
+        const ensureStateLoaded = async () => {
+            // 如果状态尚未加载（例如，background 刚被唤醒），则加载它
+            if (profiles.length === 0) {
+                console.log('Background script was inactive, reloading state...');
+                await loadInitialData();
+            }
+            
+            if (message.type === 'PROFILES_CHANGED') {
+                console.log('Profiles changed, reloading...');
+                await reloadProfiles();
+                await applyActiveProfile();
+                sendResponse({ success: true });
+            } else if (message.type === 'SET_ACTIVE_PROFILE') {
+                console.log(`Setting active profile to: ${message.profileId}`);
+                await setActiveProfile(message.profileId);
+                sendResponse({ success: true });
+            } else if (message.type === 'GET_APP_STATE') {
+                // Return both user-defined and built-in profiles for the popup
+                const allProfiles = [...getBuiltInProfiles(), ...profiles];
+                console.log('Sending app state to popup:', { profiles: allProfiles, activeProfileId });
+                sendResponse({ profiles: allProfiles, activeProfileId });
+            }
+        };
+        
+        // 执行状态加载和消息处理
+        ensureStateLoaded().catch(error => {
+            console.error('Error handling message:', error);
+            sendResponse({ error: error.message });
+        });
+        
         // Return true to indicate you wish to send a response asynchronously
         return true;
     });
