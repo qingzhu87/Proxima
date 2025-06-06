@@ -1,81 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Proxy SwitchyOmega Options</title>
-  <link rel="stylesheet" href="options.css">
+    <meta charset="UTF-8">
+    <title data-i18n="optionsTitle">Options</title>
+    <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <div class="container">
-    <header class="header">
-      <h1>Proxy SwitchyOmega</h1>
-      <p>Manage your proxy profiles</p>
-    </header>
+    <div class="container">
+        <aside class="sidebar">
+            <header class="sidebar-header">
+                <img src="icons/icon-48.png" alt="Logo" class="logo">
+                <h1 data-i18n="extensionName">Zero Omega</h1>
+            </header>
+            
+            <nav class="profiles-nav">
+                <h2 class="nav-title" data-i18n="profilesTitle">PROFILES</h2>
+                <ul id="profile-list">
+                    <!-- Profile items will be injected here by JS -->
+                    <!-- Example of a profile item: 
+                    <li class="profile-item active" data-profile-id="proxy">
+                        <span class="profile-icon"></span>
+                        <span class="profile-name">proxy</span>
+                    </li>
+                    -->
+                </ul>
+                <button id="new-profile-btn" class="new-profile-button">
+                    <span class="add-icon">+</span>
+                    <span data-i18n="newProfile">New profile...</span>
+                </button>
+            </nav>
 
-    <main class="main">
-      <div class="sidebar">
-        <div class="profile-list">
-          <h3>Profiles</h3>
-          <div id="profileList" class="profiles">
-            <!-- Profiles will be populated here -->
-          </div>
-          <button id="addProfileBtn" class="btn btn-primary">+ Add Profile</button>
-        </div>
-      </div>
+            <div class="actions">
+                <h2 class="nav-title" data-i18n="actionsTitle">ACTIONS</h2>
+                <button id="apply-changes-btn" class="action-button" disabled>
+                    <span data-i18n="applyChanges">Apply changes</span>
+                </button>
+                <button id="discard-changes-btn" class="action-button-subtle" disabled>
+                    <span data-i18n="discardChanges">Discard changes</span>
+                </button>
+            </div>
+        </aside>
 
-      <div class="content">
-        <div id="profileEditor" class="profile-editor">
-          <div class="editor-header">
-            <h2 id="editorTitle">Select a profile</h2>
-          </div>
-          
-          <div id="editorContent" class="editor-content">
-            <p class="placeholder">Select a profile from the left to edit its settings.</p>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- Add Profile Modal -->
-  <div id="addProfileModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Add New Profile</h3>
-        <button id="closeModal" class="close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="addProfileForm">
-          <div class="form-group">
-            <label for="profileName">Profile Name:</label>
-            <input type="text" id="profileName" required>
-          </div>
-          <div class="form-group">
-            <label for="profileType">Type:</label>
-            <select id="profileType">
-              <option value="http">HTTP</option>
-              <option value="https">HTTPS</option>
-              <option value="socks4">SOCKS4</option>
-              <option value="socks5">SOCKS5</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="profileHost">Server:</label>
-            <input type="text" id="profileHost" placeholder="127.0.0.1" required>
-          </div>
-          <div class="form-group">
-            <label for="profilePort">Port:</label>
-            <input type="number" id="profilePort" placeholder="8080" required>
-          </div>
-          <div class="form-actions">
-            <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
-            <button type="submit" class="btn btn-primary">Add Profile</button>
-          </div>
-        </form>
-      </div>
+        <main id="main-content" class="main-content">
+            <!-- Profile editor or other content will be loaded here -->
+            <div class="welcome-pane">
+                <h2 data-i18n="welcomeHeader">Welcome to Zero Omega</h2>
+                <p data-i18n="welcomeMessage">Select a profile on the left to get started, or create a new one.</p>
+            </div>
+        </main>
     </div>
-  </div>
 
-  <script src="options.js"></script>
+    <script src="options.js"></script>
 </body>
 </html>

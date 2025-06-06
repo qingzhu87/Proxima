@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Proxy SwitchyOmega",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
   "version": "1.0.0",
-  "description": "Manage and switch between multiple proxy profiles",
   "permissions": ["proxy", "storage", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "background": {

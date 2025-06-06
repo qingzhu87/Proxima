@@ -1,32 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="popup.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h3>Proxy SwitchyOmega</h3>
+    <div class="container">
+        <ul id="profile-list" class="profile-list">
+            <!-- Profile items will be rendered here by popup.js -->
+        </ul>
+        <footer class="footer">
+            <button id="options-btn" class="options-button">
+                <!-- Icon and text can be added here, e.g., using an SVG -->
+                <span>Settings</span>
+            </button>
+        </footer>
     </div>
-    
-    <div class="profile-list" id="profileList">
-      <!-- Profiles will be populated here -->
-    </div>
-    
-    <div class="current-status">
-      <div class="status-item">
-        <span class="status-label">Current:</span>
-        <span class="status-value" id="currentProfile">Direct</span>
-      </div>
-    </div>
-    
-    <div class="actions">
-      <button id="optionsBtn" class="btn btn-secondary">Options</button>
-      <button id="refreshBtn" class="btn btn-primary">Refresh</button>
-    </div>
-  </div>
-  
-  <script src="popup.js"></script>
+    <script src="popup.js"></script>
 </body>
 </html>

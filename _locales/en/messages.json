@@ -1,0 +1,74 @@
+{
+    "optionsTitle": {
+        "message": "Proxy SwitchyOmega Settings",
+        "description": "The title of the options page."
+    },
+    "extensionName": {
+        "message": "Proxy SwitchyOmega",
+        "description": "The name of the extension."
+    },
+    "extensionDescription": {
+        "message": "A streamlined proxy manager to navigate the web with precision and ease.",
+        "description": "The description of the extension."
+    },
+    "profilesTitle": {
+        "message": "Proxy Profiles",
+        "description": "Heading for the profiles list."
+    },
+    "newProfile": {
+        "message": "Create New Profile",
+        "description": "Button to create a new profile."
+    },
+    "actionsTitle": {
+        "message": "Configuration",
+        "description": "Heading for the actions block."
+    },
+    "applyChanges": {
+        "message": "Apply Changes",
+        "description": "Button to save and apply settings."
+    },
+    "revertChanges": {
+        "message": "Revert Changes",
+        "description": "Button to discard pending changes."
+    },
+    "welcomeHeader": {
+        "message": "Manage Your Profiles",
+        "description": "Header on the welcome screen."
+    },
+    "welcomeMessage": {
+        "message": "Select a profile from the list to view or edit its settings, or create a new one to get started.",
+        "description": "Message on the welcome screen."
+    },
+    "profileNameLabel": {
+        "message": "Profile Name",
+        "description": "Label for the profile name input field."
+    },
+    "profileTypeLabel": {
+        "message": "Profile Type",
+        "description": "Label for the profile type select field."
+    },
+    "proxyServerLegend": {
+        "message": "Proxy Server Details",
+        "description": "Legend for the proxy server settings fieldset."
+    },
+    "bypassListLegend": {
+        "message": "Bypass List",
+        "description": "Legend for the bypass list settings fieldset."
+    },
+    "bypassListDescription": {
+        "message": "One entry per line. These hosts will bypass the proxy.",
+        "description": "A small description for the bypass list textarea."
+    },
+    "proxyHostPlaceholder": {
+        "message": "Server address or IP",
+        "description": "Placeholder for the proxy server host input."
+    },
+    "proxyPortPlaceholder": {
+        "message": "Port",
+        "description": "Placeholder for the proxy server port input."
+    },
+    "deleteProfile": {
+        "message": "Delete This Profile",
+        "description": "Button to delete the current profile."
+    }
+} 

@@ -1,139 +1,120 @@
-class PopupManager {
-  constructor() {
-    this.currentProfile = "direct"
-    this.profiles = []
-    this.init()
-  }
+// --- STATE ---
+let state = {
+    profiles: [],
+    activeProfileId: null,
+};
 
-  async init() {
-    await this.loadProfiles()
-    await this.loadCurrentProfile()
-    this.renderProfiles()
-    this.bindEvents()
-  }
+// --- DOM ELEMENTS ---
+const elements = {
+    profileList: document.getElementById('profile-list'),
+    optionsBtn: document.getElementById('options-btn'),
+};
 
-  async loadProfiles() {
+// --- INITIALIZATION ---
+document.addEventListener('DOMContentLoaded', initialize);
+
+async function initialize() {
+    addEventListeners();
     try {
-      const result = await chrome.storage.sync.get(["profiles"])
-      this.profiles = result.profiles || this.getDefaultProfiles()
+        const appState = await chrome.runtime.sendMessage({ type: 'GET_APP_STATE' });
+        if (appState) {
+            state = appState;
+            render();
+        } else {
+            // Handle case where background script might not be ready
+            console.warn("Could not retrieve app state. The background service might be starting.");
+            elements.profileList.innerHTML = '<li>Loading...</li>';
+        }
     } catch (error) {
-      console.error("Failed to load profiles:", error)
-      this.profiles = this.getDefaultProfiles()
+        console.error("Error getting app state:", error);
+        // This can happen if the extension is reloaded, and the popup is open.
+        elements.profileList.innerHTML = `<li>Error: ${error.message}. Please reopen the popup.</li>`;
     }
-  }
-
-  getDefaultProfiles() {
-    return [
-      {
-        id: "direct",
-        name: "Direct",
-        type: "direct",
-        color: "#34a853",
-      },
-    ]
-  }
-
-  async loadCurrentProfile() {
-    try {
-      const result = await chrome.storage.local.get(["currentProfile"])
-      this.currentProfile = result.currentProfile || "direct"
-    } catch (error) {
-      console.error("Failed to load current profile:", error)
-    }
-  }
-
-  renderProfiles() {
-    const profileList = document.getElementById("profileList")
-    const currentProfileSpan = document.getElementById("currentProfile")
-
-    if (!profileList || !currentProfileSpan) return
-
-    profileList.innerHTML = ""
-
-    this.profiles.forEach((profile) => {
-      const profileItem = this.createProfileItem(profile)
-      profileList.appendChild(profileItem)
-    })
-
-    const currentProfileObj = this.profiles.find((p) => p.id === this.currentProfile)
-    currentProfileSpan.textContent = currentProfileObj ? currentProfileObj.name : "Direct"
-  }
-
-  createProfileItem(profile) {
-    const item = document.createElement("div")
-    item.className = `profile-item ${profile.id === this.currentProfile ? "active" : ""}`
-    item.dataset.profileId = profile.id
-
-    const icon = document.createElement("div")
-    icon.className = `profile-icon ${profile.type}`
-    icon.style.backgroundColor = profile.color || "#666"
-    icon.textContent = profile.name.charAt(0).toUpperCase()
-
-    const info = document.createElement("div")
-    info.className = "profile-info"
-
-    const name = document.createElement("div")
-    name.className = "profile-name"
-    name.textContent = profile.name
-
-    const details = document.createElement("div")
-    details.className = "profile-details"
-
-    if (profile.type === "direct") {
-      details.textContent = "Direct connection"
-    } else {
-      details.textContent = `${profile.host}:${profile.port}`
-    }
-
-    info.appendChild(name)
-    info.appendChild(details)
-    item.appendChild(icon)
-    item.appendChild(info)
-
-    item.addEventListener("click", () => this.switchProfile(profile.id))
-
-    return item
-  }
-
-  async switchProfile(profileId) {
-    try {
-      const profile = this.profiles.find((p) => p.id === profileId)
-      if (!profile) return
-
-      // Send message to background script to change proxy
-      await chrome.runtime.sendMessage({
-        action: "switchProfile",
-        profileId: profileId,
-      })
-
-      this.currentProfile = profileId
-      await chrome.storage.local.set({ currentProfile: profileId })
-
-      this.renderProfiles()
-    } catch (error) {
-      console.error("Failed to switch profile:", error)
-    }
-  }
-
-  bindEvents() {
-    const optionsBtn = document.getElementById("optionsBtn")
-    const refreshBtn = document.getElementById("refreshBtn")
-
-    if (optionsBtn) {
-      optionsBtn.addEventListener("click", () => {
-        chrome.runtime.openOptionsPage()
-      })
-    }
-
-    if (refreshBtn) {
-      refreshBtn.addEventListener("click", () => {
-        this.init()
-      })
-    }
-  }
 }
 
-// Initialize popup when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  new PopupManager()
-})
+// --- RENDERING ---
+function render() {
+    if (!elements.profileList) return;
+
+    elements.profileList.innerHTML = ''; // Clear existing list
+
+    state.profiles.forEach(profile => {
+        const item = createProfileItem(profile);
+        elements.profileList.appendChild(item);
+    });
+}
+
+function createProfileItem(profile) {
+    const item = document.createElement('li');
+    item.className = 'profile-item';
+    item.dataset.profileId = profile.id;
+
+    if (profile.id === state.activeProfileId) {
+        item.classList.add('active');
+    }
+    
+    const icon = getProfileIcon(profile);
+    const details = getProfileDetails(profile);
+
+    item.innerHTML = `
+        <div class="profile-icon">${icon}</div>
+        <div class="profile-info">
+            <div class="profile-name">${profile.name}</div>
+            <div class="profile-details">${details}</div>
+        </div>
+    `;
+
+    return item;
+}
+
+function getProfileIcon(profile) {
+    switch (profile.type) {
+        case 'direct': return '🌐'; // Globe icon
+        case 'system': return '🖥️'; // Desktop computer icon
+        case 'proxy': return '⚡'; // Lightning bolt icon
+        default: return '●';
+    }
+}
+
+function getProfileDetails(profile) {
+    switch (profile.type) {
+        case 'proxy':
+            // Check if proxy details exist to avoid "undefined:undefined"
+            if (profile.proxy && profile.proxy.host && profile.proxy.port) {
+                return `${profile.proxy.host}:${profile.proxy.port}`;
+            }
+            return 'Not configured';
+        case 'direct':
+            return 'All connections will be direct.';
+        case 'system':
+            return 'Using system proxy settings.';
+        default:
+            return '';
+    }
+}
+
+// --- EVENT HANDLING ---
+function addEventListeners() {
+    elements.optionsBtn.addEventListener('click', () => {
+        chrome.runtime.openOptionsPage();
+    });
+
+    elements.profileList.addEventListener('click', (event) => {
+        const target = event.target.closest('.profile-item');
+        if (target && target.dataset.profileId) {
+            handleProfileSelect(target.dataset.profileId);
+        }
+    });
+}
+
+function handleProfileSelect(profileId) {
+    // Optimistically update the UI for instant feedback
+    state.activeProfileId = profileId;
+    render();
+
+    // Tell the background script to apply the change
+    chrome.runtime.sendMessage({
+        type: 'SET_ACTIVE_PROFILE',
+        profileId: profileId
+    });
+}
