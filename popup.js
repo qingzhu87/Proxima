@@ -34,6 +34,8 @@ function connectToBackground() {
 document.addEventListener('DOMContentLoaded', () => {
     // 先隐藏界面，等连接成功后再显示
     initialize(true);
+    // 应用国际化
+    applyI18n();
 });
 
 async function initialize(isFirstAttempt = false) {
@@ -86,13 +88,13 @@ function showRetryUI() {
     if (elements.profileList) {
         elements.profileList.innerHTML = `
             <li class="error-message">
-                <div>连接失败，请重试</div>
-                <button id="retry-btn" class="retry-button">重试</button>
+                <div>${chrome.i18n.getMessage('connectionFailed')}</div>
+                <button id="retry-btn" class="retry-button">${chrome.i18n.getMessage('retry')}</button>
             </li>
         `;
         
         document.getElementById('retry-btn')?.addEventListener('click', () => {
-            elements.profileList.innerHTML = '<li>重新连接中...</li>';
+            elements.profileList.innerHTML = `<li>${chrome.i18n.getMessage('reconnecting')}</li>`;
             connectToBackground(); // 重新尝试建立连接
             setTimeout(() => initialize(false), 100);
         });
@@ -175,11 +177,11 @@ function getProfileDetails(profile) {
             if (profile.proxy && profile.proxy.host && profile.proxy.port) {
                 return `${profile.proxy.host}:${profile.proxy.port}`;
             }
-            return 'Not configured';
+            return chrome.i18n.getMessage('notConfigured');
         case 'direct':
-            return 'All connections will be direct.';
+            return chrome.i18n.getMessage('directConnectionDetails');
         case 'system':
-            return 'Using system proxy settings.';
+            return chrome.i18n.getMessage('systemProxyDetails');
         default:
             return '';
     }
@@ -223,6 +225,17 @@ function handleProfileSelect(profileId) {
                     window.close();
                 }).catch(e => console.error('重试后仍然失败:', e));
             }, 100);
+        }
+    });
+}
+
+// --- I18N ---
+function applyI18n() {
+    document.querySelectorAll('[data-i18n]').forEach(elem => {
+        const key = elem.getAttribute('data-i18n');
+        const translation = chrome.i18n.getMessage(key);
+        if (translation) {
+            elem.textContent = translation;
         }
     });
 }

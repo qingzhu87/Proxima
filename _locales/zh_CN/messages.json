@@ -1,6 +1,6 @@
 {
     "optionsTitle": {
-        "message": "Proxy SwitchyOmega Settings",
+        "message": "Proxy SwitchyOmega 设置",
         "description": "The title of the options page."
     },
     "extensionName": {
@@ -8,47 +8,47 @@
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "A streamlined proxy manager to navigate the web with precision and ease.",
+        "message": "一个简化的代理管理器，让您精确而轻松地浏览网络。",
         "description": "The description of the extension."
     },
     "profilesTitle": {
-        "message": "Proxy Profiles",
+        "message": "代理配置文件",
         "description": "Heading for the profiles list."
     },
     "newProfile": {
-        "message": "Create New Profile",
+        "message": "创建新配置文件",
         "description": "Button to create a new profile."
     },
     "actionsTitle": {
-        "message": "Actions",
+        "message": "操作",
         "description": "Heading for the actions block."
     },
     "applyChanges": {
-        "message": "Apply Changes",
+        "message": "应用更改",
         "description": "Button to save and apply settings."
     },
     "welcomeHeader": {
-        "message": "Manage Your Profiles",
+        "message": "管理您的配置文件",
         "description": "Header on the welcome screen."
     },
     "welcomeMessage": {
-        "message": "Select a profile from the list to view or edit its settings, or create a new one to get started.",
+        "message": "从列表中选择一个配置文件以查看或编辑其设置，或创建一个新的配置文件开始使用。",
         "description": "Message on the welcome screen."
     },
     "profileNameLabel": {
-        "message": "Profile Name",
+        "message": "配置文件名称",
         "description": "Label for the profile name input field."
     },
     "proxyServerLegend": {
-        "message": "Proxy Server Details",
+        "message": "代理服务器详情",
         "description": "Legend for the proxy server settings fieldset."
     },
     "bypassListLegend": {
-        "message": "Bypass List",
+        "message": "绕过列表",
         "description": "Legend for the bypass list settings fieldset."
     },
     "bypassListDescription": {
-        "message": "Servers for which you do not want to use any proxy: (One server on each line.)",
+        "message": "您不希望使用任何代理的服务器：（每行一个服务器）",
         "description": "A small description for the bypass list textarea."
     },
     "proxyHostPlaceholder": {
@@ -60,55 +60,55 @@
         "description": "Placeholder for the proxy server port input."
     },
     "deleteProfile": {
-        "message": "Delete This Profile",
+        "message": "删除此配置文件",
         "description": "Button to delete the current profile."
     },
     "discardChanges": {
-        "message": "Discard Changes",
+        "message": "丢弃更改",
         "description": "Button text for discarding changes."
     },
     "options": {
-        "message": "Options",
+        "message": "选项",
         "description": "Text for the options button."
     },
     "connectionFailed": {
-        "message": "Connection failed, please retry",
+        "message": "连接失败，请重试",
         "description": "Message when connection to background script fails."
     },
     "retry": {
-        "message": "Retry",
+        "message": "重试",
         "description": "Retry button text."
     },
     "reconnecting": {
-        "message": "Reconnecting...",
+        "message": "重新连接中...",
         "description": "Message when reconnecting."
     },
     "proxySchemeLabel": {
-        "message": "Scheme",
+        "message": "协议",
         "description": "Label for proxy scheme select."
     },
     "proxyServerLabel": {
-        "message": "Server",
+        "message": "服务器",
         "description": "Label for proxy server input."
     },
     "proxyPortLabel": {
-        "message": "Port",
+        "message": "端口",
         "description": "Label for proxy port input."
     },
     "bypassListNote": {
-        "message": "Note: '<local>' is a special pattern that matches all hostnames not containing a dot. '127.0.0.1', '::1', and 'localhost' are common local addresses that should be included.",
+        "message": "注意：'<local>' 是一个特殊模式，匹配所有不包含点的主机名。'127.0.0.1'、'::1' 和 'localhost' 是应该包含的常见本地地址。",
         "description": "Note about bypass list special patterns."
     },
     "directConnectionDetails": {
-        "message": "All connections will be direct.",
+        "message": "所有连接将是直接的。",
         "description": "Details text for direct connection profile."
     },
     "systemProxyDetails": {
-        "message": "Using system proxy settings.",
+        "message": "使用系统代理设置。",
         "description": "Details text for system proxy profile."
     },
     "notConfigured": {
-        "message": "Not configured",
+        "message": "未配置",
         "description": "Text for proxy not configured."
     }
 } 

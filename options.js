@@ -467,7 +467,7 @@ function createProxySettingsHTML(proxy) {
             <legend data-i18n="proxyServerLegend">Proxy Server Details</legend>
             <div class="proxy-fields-container">
                 <div class="proxy-field">
-                    <div class="proxy-field-label">Scheme</div>
+                    <div class="proxy-field-label" data-i18n="proxySchemeLabel">Scheme</div>
                     <select name="proxy.scheme" class="proxy-scheme-select">
                         <option value="http" ${p.scheme === 'http' ? 'selected' : ''}>HTTP</option>
                         <option value="https" ${p.scheme === 'https' ? 'selected' : ''}>HTTPS</option>
@@ -477,12 +477,12 @@ function createProxySettingsHTML(proxy) {
                 </div>
                 
                 <div class="proxy-field proxy-field-server">
-                    <div class="proxy-field-label">Server</div>
+                    <div class="proxy-field-label" data-i18n="proxyServerLabel">Server</div>
                     <input type="text" name="proxy.host" data-i18n-placeholder="proxyHostPlaceholder" placeholder="127.0.0.1" value="${p.host}" class="proxy-host-input">
                 </div>
                 
                 <div class="proxy-field">
-                    <div class="proxy-field-label">Port</div>
+                    <div class="proxy-field-label" data-i18n="proxyPortLabel">Port</div>
                     <input type="number" name="proxy.port" data-i18n-placeholder="proxyPortPlaceholder" placeholder="8080" value="${p.port}" class="proxy-port-input">
                 </div>
             </div>
@@ -517,9 +517,9 @@ function createBypassListHTML(bypassList) {
         <fieldset class="bypass-list-settings">
             <legend data-i18n="bypassListLegend">Bypass List</legend>
             <div class="form-group">
-                <p class="form-description" style="margin-top: 0; margin-bottom: 8px;">Servers for which you do not want to use any proxy: (One server on each line.)</p>
+                <p class="form-description" style="margin-top: 0; margin-bottom: 8px;" data-i18n="bypassListDescription">Servers for which you do not want to use any proxy: (One server on each line.)</p>
                 <textarea name="bypassList" class="bypass-list-textarea" rows="6">${listStr}</textarea>
-                <p class="form-description"><strong>Note:</strong> '&lt;local&gt;' is a special pattern that matches all hostnames not containing a dot. '127.0.0.1', '::1', and 'localhost' are common local addresses that should be included.</p>
+                <p class="form-description" data-i18n="bypassListNote"><strong>Note:</strong> '&lt;local&gt;' is a special pattern that matches all hostnames not containing a dot. '127.0.0.1', '::1', and 'localhost' are common local addresses that should be included.</p>
             </div>
         </fieldset>
     `;
