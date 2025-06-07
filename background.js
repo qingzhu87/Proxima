@@ -264,16 +264,21 @@ function addEventListeners() {
 }
 
 function updateIcon(profile) {
-    // Logic to update the extension icon based on the active profile
-    // This is a placeholder for more sophisticated icon updates
+    // 根据配置文件类型和名称更新扩展图标
     if (profile.type === 'proxy') {
-        chrome.action.setBadgeText({ text: 'P' });
-        chrome.action.setBadgeBackgroundColor({ color: '#3498db' });
+        // 使用代理配置文件名称的首字母
+        const firstLetter = profile.name.charAt(0).toUpperCase();
+        chrome.action.setBadgeText({ text: firstLetter });
+        
+        // 如果配置文件有颜色，使用该颜色作为背景色
+        const backgroundColor = profile.color || '#3498db';
+        chrome.action.setBadgeBackgroundColor({ color: backgroundColor });
     } else if (profile.type === 'system') {
         chrome.action.setBadgeText({ text: 'S' });
-        chrome.action.setBadgeBackgroundColor({ color: '#2ecc71' });
+        chrome.action.setBadgeBackgroundColor({ color: 'white' });
     } else {
         chrome.action.setBadgeText({ text: '' });
+        chrome.action.setBadgeBackgroundColor({ color: 'white' });
     }
 }
 
@@ -286,8 +291,8 @@ function findProfile(profileId) {
 
 function getBuiltInProfiles() {
     return [
-        { id: 'direct', name: '[Direct Connection]', type: 'direct', builtin: true },
-        { id: 'system', name: '[System Proxy]', type: 'system', builtin: true },
+        { id: 'direct', name: '[Direct]', type: 'direct', builtin: true },
+        { id: 'system', name: '[System]', type: 'system', builtin: true },
     ];
 }
 

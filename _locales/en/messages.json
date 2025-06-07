@@ -20,7 +20,7 @@
         "description": "Button to create a new profile."
     },
     "actionsTitle": {
-        "message": "Configuration",
+        "message": "Actions",
         "description": "Heading for the actions block."
     },
     "applyChanges": {
@@ -56,15 +56,15 @@
         "description": "Legend for the bypass list settings fieldset."
     },
     "bypassListDescription": {
-        "message": "One entry per line. These hosts will bypass the proxy.",
+        "message": "Servers for which you do not want to use any proxy: (One server on each line.)",
         "description": "A small description for the bypass list textarea."
     },
     "proxyHostPlaceholder": {
-        "message": "Server address or IP",
+        "message": "127.0.0.1",
         "description": "Placeholder for the proxy server host input."
     },
     "proxyPortPlaceholder": {
-        "message": "Port",
+        "message": "8080",
         "description": "Placeholder for the proxy server port input."
     },
     "deleteProfile": {

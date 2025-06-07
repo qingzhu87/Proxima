@@ -15,6 +15,9 @@
     --button-disabled-background: #bdc3c7;
     --sidebar-width: 260px;
     --border-radius: 4px;
+    --input-focus-color: rgba(52, 152, 219, 0.2);
+    --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -56,6 +59,7 @@ body {
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .logo {
@@ -80,12 +84,14 @@ body {
 }
 
 .profiles-nav {
-    flex-grow: 1;
-    overflow-y: auto;
+    flex-shrink: 0;
+    margin-bottom: 10px; /* 减少与ACTIONS的间距 */
+    overflow-y: auto; /* 保留滚动能力 */
 }
 
 #profile-list {
     list-style: none;
+    margin-bottom: 12px; /* 添加与新建按钮的间距 */
 }
 
 .profile-item {
@@ -110,11 +116,16 @@ body {
 }
 
 .profile-icon {
-    /* Placeholder for profile type icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 20px;
     height: 20px;
+    border-radius: 4px;
     margin-right: 10px;
-    /* background-color: #ccc; */ /* Example */
+    background-color: #3498db; /* Default color, will be overridden by inline styles */
+    color: white;
+    font-size: 10px;
 }
 
 .new-profile-button {
@@ -142,9 +153,10 @@ body {
 
 /* --- Actions --- */
 .actions {
-    margin-top: 20px;
-    padding-top: 16px;
+    margin-top: 0;
+    padding-top: 12px; /* 减少内边距 */
     border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .action-button,
@@ -164,15 +176,18 @@ body {
     background-color: var(--button-background);
     color: var(--button-text-color);
     margin-bottom: 8px;
+    box-shadow: var(--shadow-light);
 }
 
 .action-button:hover:not(:disabled) {
     background-color: var(--button-hover-background);
+    box-shadow: var(--shadow-medium);
 }
 
 .action-button:disabled {
     background-color: var(--button-disabled-background);
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .action-button-subtle {
@@ -209,4 +224,409 @@ body {
     margin-bottom: 16px;
     color: var(--text-color);
     font-weight: 500;
+}
+
+/* Enhanced UI for proxy server details */
+.profile-editor-header {
+    display: none;
+}
+
+.profile-editor-form .form-group { 
+    margin-bottom: 16px; 
+}
+
+.profile-editor-form label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 500; 
+    font-size: 14px; 
+}
+
+.profile-editor-form input[type="text"],
+.profile-editor-form input[type="number"],
+.profile-editor-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.profile-editor-form input[type="text"]:focus,
+.profile-editor-form input[type="number"]:focus,
+.profile-editor-form select:focus,
+.bypass-list-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--input-focus-color);
+}
+
+.profile-editor-form input:disabled,
+.profile-editor-form select:disabled {
+    background-color: var(--background-color);
+    cursor: not-allowed;
+}
+
+.proxy-settings { 
+    border: 1px solid var(--border-color); 
+    padding: 16px; 
+    border-radius: var(--border-radius); 
+    margin-top: 20px; 
+    background-color: #fff;
+    box-shadow: var(--shadow-light);
+}
+
+.proxy-settings legend { 
+    font-weight: 500; 
+    padding: 0 8px; 
+    background: white;
+}
+
+.form-group-inline {
+    display: grid;
+    grid-template-columns: minmax(120px, auto) minmax(200px, 1fr) minmax(120px, auto);
+    gap: 16px;
+    align-items: start;
+}
+
+.scheme-field,
+.server-field,
+.port-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.scheme-field label,
+.server-field label,
+.port-field label {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.proxy-scheme-select,
+.proxy-host-input,
+.proxy-port-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.proxy-port-input {
+    padding-right: 30px; /* 为锁图标留出空间 */
+}
+
+.form-actions { 
+    margin-top: 32px; 
+    padding-top: 16px; 
+    border-top: 1px solid var(--border-color); 
+}
+
+.bypass-list-settings { 
+    border: 1px solid var(--border-color); 
+    padding: 16px; 
+    border-radius: var(--border-radius); 
+    margin-top: 20px; 
+    background-color: #fff;
+    box-shadow: var(--shadow-light);
+}
+
+.bypass-list-settings legend { 
+    font-weight: 500; 
+    padding: 0 8px; 
+    background: white;
+}
+
+.bypass-list-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    background-color: #fff;
+    font-family: var(--font-family);
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-description {
+    font-size: 12px;
+    color: var(--text-color-light);
+    margin-top: 8px;
+}
+
+.action-button-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: var(--shadow-light);
+}
+
+.action-button-danger:hover { 
+    background-color: #c0392b; 
+    box-shadow: var(--shadow-medium);
+}
+
+/* Color picker for profile icons */
+.profile-color-picker {
+    position: absolute;
+    right: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-light);
+}
+
+.profile-item:hover .profile-color-picker {
+    opacity: 1;
+}
+
+/* Lock icon for secure fields */
+.secure-field-container {
+    display: none;
+}
+
+/* Color picker dialog styles */
+.color-picker-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 280px;
+}
+
+.color-picker-dialog h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.selected {
+    border-color: #34495e;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.dialog-cancel-btn {
+    background: #eceff1;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+    transition: background-color 0.2s;
+}
+
+.dialog-cancel-btn:hover {
+    background-color: #d1d9e0;
+}
+
+/* 去除数字输入框的上下箭头 */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+@media (max-width: 768px) {
+    .form-group-inline {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* 高级颜色选择器样式 */
+.advanced-color-picker-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 500px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+}
+
+.color-picker-header {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f5f5f5;
+}
+
+.color-picker-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+.color-picker-content {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.color-presets-panel {
+    width: 180px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.preset-color-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.preset-color-btn:hover {
+    transform: scale(1.1);
+}
+
+.preset-color-btn.selected {
+    border-color: #333;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.5) inset;
+}
+
+.color-gradient-panel {
+    flex: 1;
+    min-height: 200px;
+    background: linear-gradient(to bottom, 
+        hsl(0, 100%, 50%) 0%,
+        hsl(60, 100%, 50%) 17%,
+        hsl(120, 100%, 50%) 33%,
+        hsl(180, 100%, 50%) 50%,
+        hsl(240, 100%, 50%) 67%,
+        hsl(300, 100%, 50%) 83%,
+        hsl(360, 100%, 50%) 100%
+    );
+}
+
+.current-color-preview {
+    height: 60px;
+    margin: 16px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.hex-input-container {
+    padding: 0 16px 16px;
+}
+
+.hex-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 16px;
+    text-align: center;
+}
+
+.color-picker-footer {
+    padding: 16px;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f5f5f5;
+}
+
+/* 代理服务器详情布局 */
+.proxy-fields-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 0;
+    gap: 15px;
+}
+
+.proxy-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.proxy-field-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.proxy-field-server {
+    flex-grow: 1;
+}
+
+.proxy-scheme-select {
+    width: 130px;
+}
+
+.proxy-port-input {
+    width: 130px;
+}
+
+.sidebar::after {
+    content: "";
+    flex-grow: 1;
 }

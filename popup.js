@@ -105,10 +105,28 @@ function render() {
 
     elements.profileList.innerHTML = ''; // Clear existing list
 
-    state.profiles.forEach(profile => {
+    // 分组显示配置文件：系统配置文件和自定义配置文件分开
+    const systemProfiles = state.profiles.filter(p => p.type === 'direct' || p.type === 'system');
+    const customProfiles = state.profiles.filter(p => p.type === 'proxy');
+
+    // 先渲染系统配置文件
+    systemProfiles.forEach(profile => {
         const item = createProfileItem(profile);
         elements.profileList.appendChild(item);
     });
+
+    // 如果有自定义配置文件，添加分隔线
+    if (customProfiles.length > 0) {
+        const divider = document.createElement('li');
+        divider.className = 'divider';
+        elements.profileList.appendChild(divider);
+
+        // 然后渲染自定义配置文件
+        customProfiles.forEach(profile => {
+            const item = createProfileItem(profile);
+            elements.profileList.appendChild(item);
+        });
+    }
 }
 
 function createProfileItem(profile) {
@@ -136,10 +154,17 @@ function createProfileItem(profile) {
 
 function getProfileIcon(profile) {
     switch (profile.type) {
-        case 'direct': return '🌐'; // Globe icon
-        case 'system': return '🖥️'; // Desktop computer icon
-        case 'proxy': return '⚡'; // Lightning bolt icon
-        default: return '●';
+        case 'direct': 
+            return '🌐'; // Globe icon
+        case 'system': 
+            return '🖥️'; // Desktop computer icon
+        case 'proxy': 
+            // 使用自定义代理图标，显示首字母，与options页面保持一致
+            const firstLetter = profile.name.charAt(0).toUpperCase();
+            const color = profile.color || '#3498db'; // 使用配置文件颜色或默认颜色
+            return `<div class="custom-proxy-icon" style="background-color: ${color}">${firstLetter}</div>`;
+        default: 
+            return '●';
     }
 }
 
@@ -183,6 +208,9 @@ function handleProfileSelect(profileId) {
     chrome.runtime.sendMessage({
         type: 'SET_ACTIVE_PROFILE',
         profileId: profileId
+    }).then(() => {
+        // 成功后关闭popup
+        window.close();
     }).catch(error => {
         console.error('设置活跃配置文件失败:', error);
         // 尝试重新连接并再次发送
@@ -191,6 +219,8 @@ function handleProfileSelect(profileId) {
                 chrome.runtime.sendMessage({
                     type: 'SET_ACTIVE_PROFILE',
                     profileId: profileId
+                }).then(() => {
+                    window.close();
                 }).catch(e => console.error('重试后仍然失败:', e));
             }, 100);
         }
