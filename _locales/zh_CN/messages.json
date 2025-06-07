@@ -1,14 +1,14 @@
 {
     "optionsTitle": {
-        "message": "Proxy SwitchyOmega 设置",
+        "message": "Proxima 设置",
         "description": "The title of the options page."
     },
     "extensionName": {
-        "message": "Proxy SwitchyOmega",
+        "message": "Proxima",
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "一个简化的代理管理器，让您精确而轻松地浏览网络。",
+        "message": "Proxima: 连接无界，一键抵达。",
         "description": "The description of the extension."
     },
     "profilesTitle": {
@@ -28,7 +28,7 @@
         "description": "Button to save and apply settings."
     },
     "welcomeHeader": {
-        "message": "管理您的配置文件",
+        "message": "欢迎使用 Proxima",
         "description": "Header on the welcome screen."
     },
     "welcomeMessage": {

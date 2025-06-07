@@ -127,8 +127,8 @@ function renderMainContent() {
     if (!state.selectedProfileId) {
         elements.mainContent.innerHTML = `
             <div class="welcome-pane">
-                <h2 data-i18n="welcomeHeader">Welcome to Zero Omega</h2>
-                <p data-i18n="welcomeMessage">Select a profile on the left to get started, or create a new one.</p>
+                <h2 data-i18n="welcomeHeader"></h2>
+                <p data-i18n="welcomeMessage"></p>
             </div>`;
         applyI18n();
         return;

@@ -1,14 +1,14 @@
 {
     "optionsTitle": {
-        "message": "Proxy SwitchyOmega Settings",
+        "message": "Proxima Settings",
         "description": "The title of the options page."
     },
     "extensionName": {
-        "message": "Proxy SwitchyOmega",
+        "message": "Proxima",
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "A streamlined proxy manager to navigate the web with precision and ease.",
+        "message": "Proxima: Your Gateway to the Global Web.",
         "description": "The description of the extension."
     },
     "profilesTitle": {
@@ -28,7 +28,7 @@
         "description": "Button to save and apply settings."
     },
     "welcomeHeader": {
-        "message": "Manage Your Profiles",
+        "message": "Welcome to Proxima",
         "description": "Header on the welcome screen."
     },
     "welcomeMessage": {

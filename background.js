@@ -5,7 +5,7 @@ let activeProfileId = null;
 // --- INITIALIZATION ---
 // Using an async IIFE for top-level await
 (async () => {
-    console.log('SwitchyOmega background script starting...');
+    console.log('Proxima background script starting...');
     try {
         await loadInitialData();
         await applyActiveProfile();
@@ -14,7 +14,7 @@ let activeProfileId = null;
         updateIcon();
         
         addEventListeners();
-        console.log('SwitchyOmega initialization complete. Active profile:', activeProfileId);
+        console.log('Proxima initialization complete. Active profile:', activeProfileId);
         
         // 保持 service worker 活跃
         keepAlive();
