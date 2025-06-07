@@ -9,6 +9,10 @@ let activeProfileId = null;
     try {
         await loadInitialData();
         await applyActiveProfile();
+        
+        // 立即尝试更新图标（即使没有配置文件信息）
+        updateIcon();
+        
         addEventListeners();
         console.log('SwitchyOmega initialization complete. Active profile:', activeProfileId);
         
@@ -32,6 +36,9 @@ function keepAlive() {
                 console.log('检测到活跃配置文件变化，更新中...');
                 activeProfileId = data.activeProfileId;
                 applyActiveProfile();
+            } else {
+                // 即使活跃配置文件没有变化，也确保图标状态正确
+                updateIcon();
             }
         });
     }, keepAliveInterval);
@@ -223,6 +230,34 @@ async function verifyProxySettings(expectedConfig) {
 
 // --- UI & EVENT HANDLING ---
 function addEventListeners() {
+    // 监听浏览器启动事件
+    chrome.runtime.onStartup.addListener(async () => {
+        console.log('Chrome 浏览器已启动，立即更新代理状态和图标');
+        await loadInitialData();
+        await applyActiveProfile();
+    });
+
+    // 监听扩展安装或更新事件
+    chrome.runtime.onInstalled.addListener(async (details) => {
+        console.log('扩展已安装或更新:', details.reason);
+        await loadInitialData();
+        await applyActiveProfile();
+    });
+    
+    // 监听标签页激活事件，确保在用户切换标签页时更新图标
+    chrome.tabs.onActivated.addListener(() => {
+        console.log('标签页已激活，更新图标状态');
+        updateIcon();
+    });
+    
+    // 监听窗口获得焦点事件，确保在窗口获得焦点时更新图标
+    chrome.windows.onFocusChanged.addListener((windowId) => {
+        if (windowId !== chrome.windows.WINDOW_ID_NONE) {
+            console.log('窗口获得焦点，更新图标状态');
+            updateIcon();
+        }
+    });
+
     // Listen for messages from popup or options page
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log('Received message:', message);
@@ -264,6 +299,19 @@ function addEventListeners() {
 }
 
 function updateIcon(profile) {
+    // 如果没有提供配置文件，尝试使用当前活跃的配置文件
+    if (!profile) {
+        console.log('未提供配置文件，尝试查找当前活跃配置文件');
+        profile = findProfile(activeProfileId);
+        if (!profile) {
+            console.warn(`无法找到活跃配置文件: ${activeProfileId}，使用默认图标`);
+            // 清除图标
+            chrome.action.setBadgeText({ text: '' });
+            chrome.action.setBadgeBackgroundColor({ color: 'white' });
+            return;
+        }
+    }
+    
     // 根据配置文件类型和名称更新扩展图标
     if (profile.type === 'proxy') {
         // 使用代理配置文件名称的首字母
